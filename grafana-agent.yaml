@@ -1,0 +1,40 @@
+metrics:
+  wal_directory: /tmp/wal
+  global: {}
+  configs:
+    - name: default
+      remote_write:
+        - url: http://example.invalid/api/prom/push
+          tls_config:
+            insecure_skip_verify: true
+          basic_auth:
+            username: xxxx
+            password: xxxx
+logs:
+  positions_directory: /tmp/loki-pos
+  configs:
+    - name: default
+      scrape_configs: []
+      clients:
+        - url: http://example.invalid/loki/api/v1/push
+traces:
+  configs:
+    - name: default
+      remote_write:
+        - endpoint: http://example.invalid
+          basic_auth:
+            username: xxxx
+            password: xxxx
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+            http:
+integrations:
+  app_agent_receiver_configs:
+  -  autoscrape:
+       enable: true
+     instance: frontend
+     server:
+       host: 0.0.0.0
+       port: 8888

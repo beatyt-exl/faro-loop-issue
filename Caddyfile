@@ -1,0 +1,16 @@
+localhost {
+    @site {
+        not path /collect*
+    }
+
+    @collect path /collect*
+
+    file_server
+
+    rewrite @site /index.html
+
+    handle @collect {
+        rewrite * /collect
+        reverse_proxy host.docker.internal:8888
+    }
+}

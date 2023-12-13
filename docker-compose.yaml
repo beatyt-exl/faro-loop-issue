@@ -1,0 +1,19 @@
+services:
+  webserver:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./index.html:/srv/index.html
+
+  agent:
+    image: grafana/agent:latest
+    ports:
+      - "8888:8888"
+      - "12345:12345"
+      - "12346:12346"
+    volumes:
+      - ./grafana-agent.yaml:/etc/grafana-agent/config/grafana-agent.yaml
+    command: --config.file=/etc/grafana-agent/config/grafana-agent.yaml --enable-features=integrations-next --server.http.address=0.0.0.0:12345
